@@ -15,6 +15,9 @@ from gtts import gTTS
 GPIO.setwarnings(False) # Ignore warnings for now 
 GPIO.setmode(GPIO.BCM) # BCM vs Board 
 GPIO.setup(23, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(25, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(26, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 #load api key 
 openai.api_key_path ='.env'
@@ -114,6 +117,7 @@ def pressButton(channel):
 # let AI describe "Human"
 def PressButtonHuman(channel):
     humanText="they are a member of the Homo sapiens species, which is the only extant species of the Homo genus. Homo sapiens are characterized as having bipedal locomotion, manual dexterity, and a high degree of tool use and cultural interchange."
+    print(humanText)
     human = gTTS(text=humanText, lang='en', slow=False)
     human.save("human.wav")
     os.system("mpg123 human.wav")
@@ -121,6 +125,7 @@ def PressButtonHuman(channel):
 # let AI describe "Dark"
 def PressButtonDark(channel):
     darkText = "This word may simply refer to the absence of light. Others may associate with more negative concepts such as fear, evil, or mystery."
+    print(darkText)
     dark = gTTS(text=darkText, lang='en', slow=False)
     dark.save("dark.wav")
     os.system("mpg123 dark.wav")
@@ -128,9 +133,15 @@ def PressButtonDark(channel):
 # let AI describe "Abstraction"
 def PressButtonAbstraction(channel):
     abstractionText="This is a process of hiding the implementation details and showing only the functionality to the user. In other words, it is a process of hiding the complexity of a system and providing an interface to the user to access the system."
+    print(abstractionText)
     abstraction = gTTS(text=abstractionText, lang='en', slow=False)
     abstraction.save("abstraction.wav")
     os.system("mpg123 abstraction.wav")
+
+
+GPIO.add_event_detect(24,GPIO.FALLING, callback=PressButtonHuman, bouncetime=200)
+GPIO.add_event_detect(25,GPIO.FALLING, callback=PressButtonDark, bouncetime=200)
+GPIO.add_event_detect(26,GPIO.FALLING, callback=PressButtonAbstraction, bouncetime=200)
 
 
 
@@ -142,5 +153,5 @@ message = input ("Press enter to quit")
 GPIO.cleanup()
 
 
-GPIO.add_event_detect(24,GPIO.FALLING, callback=PressButtonHuman, bouncetime=200)
-GPIO.cleanup()
+
+
